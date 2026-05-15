@@ -10,9 +10,18 @@ function iniciarjogo(){
             let casa = document.createElement("div");
 
             casa.classList.add("casa");
-            casa.innerHTML = "-";
+            casa.innerHTML = "";
+
             casa.onclick = function(){
-                alert("linha: " + linha + " | coluna: " + coluna);
+                let casas = document.querySelectorAll(".casa");
+
+                casas.forEach(function(c){
+                    c.classList.remove("selecionada");
+                });
+                
+                casa.classList.add("selecionada");
+
+                document.getElementById("mensagem").innerHTML = "Linha: " + linha + " | Coluna:" + coluna; 
             };
 
             tabuleiro.appendChild(casa);
