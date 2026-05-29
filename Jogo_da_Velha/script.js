@@ -30,9 +30,9 @@ function iniciarjogo(){
 
     }
 }
-/////////////////////
-///Jogadores
-/////////////////////
+  ///////////////////
+ //// Jogadores ////
+//////////////////
 
 let jogadorAtual = "X";
 let casas = [];
@@ -88,189 +88,82 @@ function iniciarjogo(){
     }
 }
 
-///////////
-//// Condicao de Vitoria
-//////
+  /////////////////////////////
+ //// Condicao de Vitoria ////
+/////////////////////////////
 
 function verificarVitoria(){
 
     let vencedor = false;
 
-    //VERIFICA AS LINHAS
-    if(
-        casas[0].innerHTML != "" &&
+    let combinacoes = [
 
-        casas[0].innerHTML == casas[1].innerHTML &&
+        // COMBINAÇÃO DAS LINHAS DE VITÓRIA.
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
 
-        casas[1].innerHTML == casas[2].innerHTML
-    ){ 
+        // COMBINAÇÃO DAS COLUNAS DE VITÓRIA.
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
 
-        vencedor = true;
+        // COMBINAÇÃO DAS DIAGONAIS DE VITÓRIA.
+        [0, 4, 8],
+        [2, 4, 6]
 
-        alert(
-            "vitória do jogador " + casas[0].innerHTML
-        );
+    ];
 
-        setTimeout(function(){
-            iniciarjogo();
-        }, 100);
-    } 
+    for(let i = 0; i < combinacoes.length; i++){ // .lenght pega todas as combinações da array "combinacoes".
+        
+        let a = combinacoes[i][0];
+        let b = combinacoes[i][1]; // Percorre as posições das combinações de vitória.
+        let c = combinacoes[i][2];
+    
+        if(
 
-    else if(
-        casas[3].innerHTML != "" &&
+            casas[a].innerHTML != "" &&
 
-        casas[3].innerHTML == casas[4].innerHTML &&
+            casas[a].innerHTML == casas[b].innerHTML && // Compara as combinações de vitória nas casas do jogador X ou O.
 
-        casas[4].innerHTML == casas[5].innerHTML
-    ){ 
+            casas[b].innerHTML == casas[c].innerHTML
 
-        vencedor = true;
+        ){
 
-        alert(
-            "vitória do jogador " + casas[3].innerHTML
-        );
+            vencedor = true;
 
-        setTimeout(function(){
-            iniciarjogo();
-        }, 100);
-    } 
+            alert( "Vitória do Jogador " + casas[a].innerHTML ); // Mensagem de vitória.
 
-    else if(
-        casas[6].innerHTML != "" &&
+            setTimeout(function(){ 
+                iniciarjogo();  // Renicia o jogo a cada vitória.
+            }, 100);
 
-        casas[6].innerHTML == casas[7].innerHTML &&
+            return;
+        }
+    }   
+    
+    // VERIFICA CONDIÇÃO DE EMPATE.
+    if(vencedor == false){ 
 
-        casas[7].innerHTML == casas[8].innerHTML
-    ){ 
+            let empate = true; 
 
-        vencedor = true;
+            casas.forEach(function(casa){
 
-        alert(
-            "vitória do jogador " + casas[6].innerHTML
-        );
-
-        setTimeout(function(){
-            iniciarjogo();
-        }, 100);
-    } 
-
-    //VERIFICA AS DIAGONAIS
-    else if(
-        casas[0].innerHTML != "" &&
-
-        casas[0].innerHTML == casas[4].innerHTML &&
-
-        casas[4].innerHTML == casas[8].innerHTML
-    ){
-
-        vencedor = true;
-
-        alert(
-            "vitória do jogador " + casas[0].innerHTML
-        );
-
-        setTimeout(function(){
-            iniciarjogo();
-        }, 100);
-    }
-
-    else if(
-        casas[2].innerHTML != "" &&
-
-        casas[2].innerHTML == casas[4].innerHTML &&
-
-        casas[4].innerHTML == casas[6].innerHTML
-    ){
-
-        vencedor = true;
-
-        alert(
-            "vitória do jogador " + casas[2].innerHTML
-        );
-
-        setTimeout(function(){
-            iniciarjogo();
-        }, 100);
-    }
-
-    //VERIFICA AS COLUNAS
-    else if(
-        casas[0].innerHTML != "" &&
-
-        casas[0].innerHTML == casas[3].innerHTML &&
-
-        casas[3].innerHTML == casas[6].innerHTML
-    ){
-
-        vencedor = true;
-
-        alert(
-            "vitória do jogador " + casas[0].innerHTML
-        );
-
-        setTimeout(function(){
-            iniciarjogo();
-        }, 100);
-    }
-
-    else if(
-        casas[1].innerHTML != "" &&
-
-        casas[1].innerHTML == casas[4].innerHTML &&
-
-        casas[4].innerHTML == casas[7].innerHTML
-    ){
-
-        vencedor = true;
-
-        alert(
-            "vitória do jogador " + casas[1].innerHTML
-        );
-
-        setTimeout(function(){
-            iniciarjogo();
-        }, 100);
-    }
-
-    else if(
-        casas[2].innerHTML != "" &&
-
-        casas[2].innerHTML == casas[5].innerHTML &&
-
-        casas[5].innerHTML == casas[8].innerHTML
-    ){
-
-        vencedor = true;
-
-        alert(
-            "vitória do jogador " + casas[2].innerHTML
-        );
-
-        setTimeout(function(){
-            iniciarjogo();
-        }, 100);
-    }
-
-    //EMPATE
-    if(vencedor == false){
-
-        let empate = true;
-
-        casas.forEach(function(casa){
-
-            if(casa.innerHTML == ""){
-                empate = false;
-            }
-
-        });
+                if(casa.innerHTML == ""){
+                    empate = false; // Impede que o jogo empata com as casas vazias.
+                }
+            });
 
         if(empate){
 
-            alert("Empate!");
+            alert("Empate"); // Mensagem de empate.
 
             setTimeout(function(){
                 iniciarjogo();
             }, 100);
+
         }
+
     }
+
 }
