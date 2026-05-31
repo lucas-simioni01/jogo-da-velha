@@ -1,45 +1,22 @@
-function iniciarjogo(){
-
-    let tabuleiro = document.getElementById("tabuleiro");
-
-    tabuleiro.innerHTML = "";
-
-    for(let linha = 1; linha <= 3; linha++){
-        for(let coluna = 1; coluna <= 3; coluna++){
-
-            let casa = document.createElement("div");
-
-            casa.classList.add("casa");
-            casa.innerHTML = "";
-
-            casa.onclick = function(){
-                let casas = document.querySelectorAll(".casa");
-
-                casas.forEach(function(c){
-                    c.classList.remove("selecionada");
-                });
-                
-                casa.classList.add("selecionada");
-
-                document.getElementById("mensagem").innerHTML = "Linha: " + linha + " | Coluna:" + coluna; 
-            };
-
-            tabuleiro.appendChild(casa);
-
-        };
-
-    }
-}
-  ///////////////////
+///////////////////
  //// Jogadores ////
-//////////////////
+///////////////////
 
 let jogadorAtual = "X";
 let casas = [];
+let jogoFinalizado = false;
 
 function iniciarjogo(){
 
     jogadorAtual = "X";
+    jogoFinalizado = false; // Jogo não está finalizado
+
+    let mensagem = document.getElementById("mensagem");
+
+    mensagem.innerHTML = "Vez de Jogador X";
+
+    mensagem.classList.remove("vitoria");
+    mensagem.classList.remove("empate");
 
     let tabuleiro = document.getElementById("tabuleiro");
 
@@ -57,27 +34,35 @@ function iniciarjogo(){
 
             casa.onclick = function(){
 
-                if(casa.innerHTML == ""){
+                if(jogoFinalizado){
+        return;
+    }
 
-                    casa.innerHTML = jogadorAtual;
+    if(casa.innerHTML == ""){
 
-                    verificarVitoria();
-                    
-                    if(jogadorAtual == "X"){
-                        jogadorAtual = "O";
-                    } else {
-                        jogadorAtual = "X";
-                    }
-                  
-                }
+        casa.innerHTML = jogadorAtual;
 
-                casas.forEach(function(c){
-                    c.classList.remove("selecionada");
-                });
+        verificarVitoria(); 
 
-                casa.classList.add("selecionada");
+        if(!jogoFinalizado){ // Continua o jogo caso não há vitória
 
-                document.getElementById("mensagem").innerHTML = "Vez de Jogador " + jogadorAtual;
+            if(jogadorAtual == "X"){
+                jogadorAtual = "O";
+            }
+            else{
+                jogadorAtual = "X";
+            }
+
+            document.getElementById("mensagem").innerHTML =
+            "Vez de Jogador " + jogadorAtual;
+        }
+    }
+
+    casas.forEach(function(c){
+        c.classList.remove("selecionada"); // remove a borda vermelha quando o jogador seleciona outra casa.
+    });
+
+    casa.classList.add("selecionada"); // selecionada indica a casa que o jogador clicou com a borda vermelha.
 
             };
 
@@ -131,17 +116,26 @@ function verificarVitoria(){
         ){
 
             vencedor = true;
+            jogoFinalizado = true; // Finaliza o jogo.
 
-            alert( "Vitória do Jogador " + casas[a].innerHTML ); // Mensagem de vitória.
+           let mensagem = document.getElementById("mensagem");
+
+            mensagem.innerHTML =
+            "Vitória do Jogador " + casas[a].innerHTML + "!";
+            mensagem.classList.add("vitoria");
+
+            casas[a].classList.add("ganhador");
+            casas[b].classList.add("ganhador"); // Adiciona Cor.
+            casas[c].classList.add("ganhador");
 
             setTimeout(function(){ 
                 iniciarjogo();  // Renicia o jogo a cada vitória.
-            }, 100);
+            }, 2000);
 
             return;
         }
     }   
-    
+
     // VERIFICA CONDIÇÃO DE EMPATE.
     if(vencedor == false){ 
 
@@ -156,14 +150,18 @@ function verificarVitoria(){
 
         if(empate){
 
-            alert("Empate"); // Mensagem de empate.
+            jogoFinalizado = true; // Finaliza o jogo.
+
+            // Mensagem de empate.
+            let mensagem = document.getElementById("mensagem");
+
+            mensagem.innerHTML = "Empate!";  
+
+            mensagem.classList.add("empate");
 
             setTimeout(function(){
                 iniciarjogo();
-            }, 100);
-
+            }, 2000);
         }
-
     }
-
 }

@@ -170,9 +170,23 @@ button:hover{
 
 .empate{
 
-    background:#FFC107;
+    color: black;
 
-    color:black;
+    transform:scale(1.05);
+}
 
-    border:3px solid orange;
+.ganhador{
+
+    color: #4CAF50;
+
+    transition: 0.3s;
+}
+
+.vitoria{
+
+    color:#4CAF50;
+
+    border:3px solid darkgreen;
+
+    transform:scale(1.05);
 }
